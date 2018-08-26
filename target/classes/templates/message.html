@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>消息详情</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style>
+        div {
+            margin: 280px 380px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            var idCard = getIdCard();
+            $.get("/messageInfo",{id_card: idCard},function (data, state) {
+                $("#eth_address").text(data.eth_address);
+                $("#span1").text(data.score);
+            });
+        });
+
+        function getIdCard() {
+            var queryString = getQuery().substring(1);
+            var queryArray = queryString.split("&");
+            for (var i = 0; i < queryArray.length; i++) {
+                if (queryArray[i].startsWith("id_card")) {
+                    return queryArray[i].substring("id_card=".length);
+                }
+            }
+        }
+
+        function getQuery() {
+            return window.location.search;
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <p>
+            以下是为您自动生成的以太坊地址
+        </p>
+        <p id = "eth_address" style="color: darkgreen"></p>
+        <p>合约地址为：0xc069d761357463b9da3696cf9dd1fc8f65c8eaea</p>
+        <span>您的信用分数：</span>
+        <span id = "span1" style="color: blue"></span>
+    </div>
+</body>
+</html>

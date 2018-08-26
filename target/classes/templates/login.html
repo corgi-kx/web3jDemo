@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                $("#span1").text(" ");
+                $("#span2").text(" ");
+                $("#span3").text(" ");
+                $("#textarea1").text((" "));
+                console.info("错误信息标签已清空");
+                var _userName =  $("#userName").val();
+                var _passworld = $("#passworld").val();
+                var _verificationCode = $("#verification").val();
+                console.info("值已收集");
+                console.info(_userName);
+                console.info(_passworld);
+                console.info(_verificationCode);
+                $.get(
+                   "/loginVerifty",
+                       {userName:_userName,passworld:_passworld,verificationCode:_verificationCode},
+                       function (data,state) {
+                           switch (data.boolean){
+                               case "god" :
+                                   $(location).attr('href', '//127.0.0.1:8080/god');
+                                   break;
+                               case "userNameError" :
+                                   console.info("打印用户错误信息！");
+                                   $("#span1").text("用户不存在！");
+                                   break;
+                               case "passworldError":
+                                   $("#span2").text("密码错误！");
+                                   break;
+                               case "verificationCodeError":
+                                   $("#span3").text("验证码错误！");
+                                   break;
+                               case "true" :
+                                   $(location).attr('href', '//127.0.0.1:8080/message?id_card='+ _userName);
+                                   // $("#textarea1").text(data.greet);
+                                   break;
+                           }
+                });
+            });
+            $("#register").click(function () {
+                $("#span1").text(" ");
+                $("#span2").text(" ");
+                $("#span3").text(" ");
+                $("#textarea1").text((" "));
+                $("#span_special").addClass("fa fa-spinner fa-pulse");
+                  console.info("点击了注册");
+                var _userName =  $("#userName").val();
+                var _passworld = $("#passworld").val();
+                var _verificationCode = $("#verification").val();
+                    $.get("/register",
+                        {userName:_userName,passworld:_passworld,verificationCode:_verificationCode},
+                        function (data, state) {
+                          if(data.boolean == true) {
+                              $("#span_special").removeClass("fa fa-spinner fa-pulse");
+                             alert("注册成功！");
+                             $(location).attr('href', '//127.0.0.1:8080/message?id_card='+ _userName);
+                          }else if (data.boolean == "chongfu") {
+                              alert("账号已被注册！");
+                          } else {
+                              alert("注册失败！");
+                          }
+                        });
+                });
+        });
+    </script>
+    <style>
+        span{
+            color: red;
+        }
+        .nanshou {
+            margin: auto 100px;
+        }
+        #span_special {
+            color: black;
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+                        <div class="form-group">
+                            <label for="userName">
+                               身份证号：
+                            </label>
+                            <input type="text" class="form-control" id="userName" />
+                            <span id = "span1">&nbsp;</span>
+                        </div>
+                        <div class="form-group">
+
+                            <label for="passworld">
+                               密码：
+                            </label>
+                            <input type="password" class="form-control" id="passworld" />
+                            <span id = "span2">&nbsp;</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="verification">
+                                验证码：
+                            </label>
+                            <input type="text" class="form-control" id="verification" />
+                            <span id = "span3">&nbsp;</span>
+                        </div>
+                        <div class="nanshou">
+                        <button type="submit" class="btn btn-primary" id = "submit">
+                            提交
+                        </button>
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span id = "span_special">&nbsp;</span>
+                        <button type="button" class="btn btn-info" id = "register">
+                            注册
+                        </button>
+                        </div>
+                </div>
+                <div class="col-md-6">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
