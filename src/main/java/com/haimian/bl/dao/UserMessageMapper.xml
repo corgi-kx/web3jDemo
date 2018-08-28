@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="firstMyBatis">
+    <!--parameterType可省略-->
+    <insert id="insertUserMessage" parameterType="userBean">
+        insert into user_message (id_card, passworld, eth_address, eth_private_key, eth_public_key, eth_key_store) values(#{id_card}, #{password}, #{eth_address}, #{eth_private_key}, #{eth_public_key}, #{eth_key_store})
+    </insert>
+</mapper>
